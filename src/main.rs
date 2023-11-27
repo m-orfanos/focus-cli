@@ -5,12 +5,14 @@ use chrono::{DateTime, Duration, Local};
 use indicatif::{ProgressBar, ProgressState, ProgressStyle};
 
 fn main() {
+    // configuration
     const SLEEP_TIME_IN_SECONDS: u64 = 1; // FIXME: change to at least 60 seconds
 
     let duration_in_seconds: Duration = Duration::seconds(15);
     let start: DateTime<Local> = Local::now();
     let end = start + duration_in_seconds;
 
+    // build view
     let pb = ProgressBar::new(duration_in_seconds.num_seconds().try_into().unwrap());
     pb.set_style(
         ProgressStyle::with_template(
@@ -18,7 +20,7 @@ fn main() {
         )
         .unwrap()
         .with_key("start", move |_state: &ProgressState, w: &mut dyn Write| {
-            write!(w, "{}", start.format("%Y-%m-%dT%H:%M:%S").to_string()).unwrap()
+            write!(w, "{}", start.format("%Y-%m-%dT%H:%M").to_string()).unwrap()
         })
         // FIXME: do not hardcode title
         .with_key("title", |_state: &ProgressState, w: &mut dyn Write| {
@@ -37,6 +39,7 @@ fn main() {
         .progress_chars("#>-"),
     );
 
+    // main loop
     let mut now = start;
     while now < end {
         let elapsed = now - start;
@@ -44,4 +47,7 @@ fn main() {
         thread::sleep(std::time::Duration::from_secs(SLEEP_TIME_IN_SECONDS));
         now = Local::now();
     }
+
+    // end
+    pb.finish();
 }
