@@ -1,6 +1,6 @@
 # focus-cli
 
-`focus-cli` is a command line app written in Rust that allows users to run a timer with simple visual feedback. The timer will count down to 0, where a small sound will be played to indicate that the timer has finished.
+`focus-cli` is a command line app written in Rust that allows users to run a timer with simple audio/visual feedback. The timer will count down to 0, where a small sound will be played to indicate that the timer has finished.
 
 ## Getting Started
 
