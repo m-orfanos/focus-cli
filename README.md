@@ -12,7 +12,7 @@ To use `focus-cli`, follow these steps:
 4. Run the app (see below).
 
 > [!warning]
-> MacOS/Linux/Windows WSL, NOT Windows
+> MacOS/Linux/Windows WSL compatible, NOT Windows
 
 ## Usage
 
