@@ -5,15 +5,28 @@ use chrono::{DateTime, Duration, Local};
 use indicatif::{ProgressBar, ProgressState, ProgressStyle};
 
 fn main() {
-    // configuration
-    const SLEEP_TIME_IN_SECONDS: u64 = 1; // FIXME: change to at least 60 seconds
+    // setup cli parser
 
-    let duration_in_seconds: Duration = Duration::seconds(15);
+    // setup view
+    let duration: Duration = Duration::seconds(15);
     let start: DateTime<Local> = Local::now();
-    let end = start + duration_in_seconds;
+    let end = start + duration;
 
-    // build view
-    let pb = ProgressBar::new(duration_in_seconds.num_seconds().try_into().unwrap());
+    let pb = build_view(start, duration);
+
+    // main loop
+    let mut now = start;
+    while now < end {
+        let elapsed = now - start;
+        pb.set_position(elapsed.num_seconds().try_into().unwrap());
+        thread::sleep(std::time::Duration::from_secs(1)); // FIXME: change to at least 60 seconds
+        now = Local::now();
+    }
+    pb.finish();
+}
+
+fn build_view(start: DateTime<Local>, duration: Duration) -> ProgressBar {
+    let pb = ProgressBar::new(duration.num_seconds().try_into().unwrap());
     pb.set_style(
         ProgressStyle::with_template(
             "{spinner:.green} {start} {title} {duration} [{wide_bar:.cyan/blue}] ({eta})",
@@ -30,7 +43,7 @@ fn main() {
         .with_key(
             "duration",
             move |_state: &ProgressState, w: &mut dyn Write| {
-                write!(w, "{}s", duration_in_seconds.num_seconds()).unwrap()
+                write!(w, "{}s", duration.num_seconds()).unwrap()
             },
         )
         .with_key("eta", |state: &ProgressState, w: &mut dyn Write| {
@@ -38,16 +51,5 @@ fn main() {
         })
         .progress_chars("#>-"),
     );
-
-    // main loop
-    let mut now = start;
-    while now < end {
-        let elapsed = now - start;
-        pb.set_position(elapsed.num_seconds().try_into().unwrap());
-        thread::sleep(std::time::Duration::from_secs(SLEEP_TIME_IN_SECONDS));
-        now = Local::now();
-    }
-
-    // end
-    pb.finish();
+    pb
 }
