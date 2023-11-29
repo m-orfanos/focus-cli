@@ -35,6 +35,7 @@ fn main() {
     }
     pb.finish();
 
+    // play sound
     Command::new("sh")
         .arg("-c")
         .arg("echo $'\\a'")
