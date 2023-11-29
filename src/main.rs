@@ -1,4 +1,5 @@
 use std::fmt::Write;
+use std::process::Command;
 use std::thread;
 
 use chrono::{DateTime, Duration, Local};
@@ -33,6 +34,12 @@ fn main() {
         now = Local::now();
     }
     pb.finish();
+
+    Command::new("sh")
+        .arg("-c")
+        .arg("echo $'\\a'")
+        .spawn()
+        .unwrap();
 }
 
 fn build_view(start: DateTime<Local>, duration: Duration, title: String) -> ProgressBar {
