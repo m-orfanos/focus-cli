@@ -2,17 +2,23 @@ use std::fmt::Write;
 use std::thread;
 
 use chrono::{DateTime, Duration, Local};
+use clap::{arg, command};
 use indicatif::{ProgressBar, ProgressState, ProgressStyle};
 
 fn main() {
     // setup cli parser
+    let cli = command!()
+        .arg(arg!([title] "The name of the task to track").required(true))
+        .get_matches();
+
+    let title = cli.get_one::<String>("title").unwrap().to_string();
 
     // setup view
     let duration: Duration = Duration::seconds(15);
     let start: DateTime<Local> = Local::now();
     let end = start + duration;
 
-    let pb = build_view(start, duration);
+    let pb = build_view(start, duration, title);
 
     // main loop
     let mut now = start;
@@ -25,7 +31,7 @@ fn main() {
     pb.finish();
 }
 
-fn build_view(start: DateTime<Local>, duration: Duration) -> ProgressBar {
+fn build_view(start: DateTime<Local>, duration: Duration, title: String) -> ProgressBar {
     let pb = ProgressBar::new(duration.num_seconds().try_into().unwrap());
     pb.set_style(
         ProgressStyle::with_template(
@@ -35,9 +41,8 @@ fn build_view(start: DateTime<Local>, duration: Duration) -> ProgressBar {
         .with_key("start", move |_state: &ProgressState, w: &mut dyn Write| {
             write!(w, "{}", start.format("%Y-%m-%dT%H:%M").to_string()).unwrap()
         })
-        // FIXME: do not hardcode title
-        .with_key("title", |_state: &ProgressState, w: &mut dyn Write| {
-            write!(w, "{}", "Hello World").unwrap()
+        .with_key("title", move |_state: &ProgressState, w: &mut dyn Write| {
+            write!(w, "{}", title).unwrap()
         })
         // FIXME: do not hardcode duration to seconds
         .with_key(
