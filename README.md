@@ -31,6 +31,7 @@ Options:
 ## Example
 
 ```shell
-focus-cli "Review notes"
-focus-cli "Create weekly schedule" 45
+$ focus-cli "Create weekly schedule" 45
+# progress bar will fill up over time
+Create weekly scheduel 45m 13:53 00:12:45 [#######>             ]
 ````
