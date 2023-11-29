@@ -9,7 +9,7 @@ To use `focus-cli`, follow these steps:
 1. Install Rust on your computer if you haven't already done so.
 2. Clone this repository to your local machine.
 3. Build the app by running `cargo build --release` in your terminal.
-4. Run the app (see below).
+4. Run the app with `fx` from the release folder (see below).
 
 > [!warning]
 > MacOS/Linux/Windows WSL compatible, NOT Windows
@@ -17,7 +17,7 @@ To use `focus-cli`, follow these steps:
 ## Usage
 
 ```shell
-Usage: focus-cli <title> [duration]
+Usage: fx <title> [duration]
 
 Arguments:
   <title>     The name of the task to track
@@ -31,7 +31,8 @@ Options:
 ## Example
 
 ```shell
-$ focus-cli "Create weekly schedule" 45
+$ ./target/release/fx "Create weekly schedule" 45
 # progress bar will fill up over time
-Create weekly scheduel 45m 13:53 00:12:45 [#######>             ]
+# format: title duration start-time elapsed-time progress-bar
+Create weekly schedule 45m 13:53 00:12:45 [##########>                                       ]
 ````
