@@ -11,6 +11,8 @@ To use `focus-cli`, follow these steps:
 3. Build the app by running `cargo build --release` in your terminal.
 4. Run the app with `fx` from the release folder (see below).
 
+A compiled binary built locally on a x86_64 machine running Fedora 39 is available in [Releases](https://github.com/m-orfanos/focus-cli/releases).
+
 > [!warning]
 > MacOS/Linux/Windows WSL compatible, NOT Windows
 
